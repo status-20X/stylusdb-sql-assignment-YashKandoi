@@ -1,6 +1,6 @@
 // src/index.js
 
-const {parseQuery,parseJoinClause} = require('./queryParser');
+const {parseQuery , parseJoinClause} = require('./queryParser');
 const readCSV = require('./csvReader');
 
 async function executeSELECTQuery(query) {

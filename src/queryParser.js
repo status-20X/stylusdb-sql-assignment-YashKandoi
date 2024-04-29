@@ -34,7 +34,7 @@ function parseQuery(query) {
         whereClauses = parseWhereClause(whereClause);
     }
 
-
+    
     return {
         fields: fields.split(',').map(field => field.trim()),
         table: table.trim(),
@@ -80,4 +80,4 @@ function parseJoinClause(query) {
     };
 }
 
-module.exports = { parseQuery, parseJoinClause };
+module.exports = { parseQuery, parseJoinClause};

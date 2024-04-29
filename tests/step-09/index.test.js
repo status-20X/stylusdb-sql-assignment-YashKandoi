@@ -1,9 +1,9 @@
-const readCSV = require('../../src/csvReader');
-const {parseQuery} = require('../../src/queryParser');
+const  readCSV  = require('../../src/csvReader');
+const { parseQuery, parseJoinClause} = require('../../src/queryParser');
 const executeSELECTQuery = require('../../src/index');
 
 test('Read CSV File', async () => {
-    const data = await readCSV('./student.csv');
+    const data = await readCSV('tests/step-09/student.csv');
     expect(data.length).toBeGreaterThan(0);
     expect(data.length).toBe(4);
     expect(data[0].name).toBe('John');
@@ -18,8 +18,13 @@ test('Parse SQL Query', () => {
         table: 'student',
         whereClauses: [],
         joinCondition: null,
+        joinType: null,
         joinTable: null,
-        joinType: null
+        // groupByFields: null,
+        // hasAggregateWithoutGroupBy: false,
+        // "orderByFields": null,
+        // "limit": null,
+        // "isDistinct": false
     });
 });
 
@@ -46,7 +51,12 @@ test('Parse SQL Query with WHERE Clause', () => {
         }],
         joinCondition: null,
         joinTable: null,
-        joinType: null
+        joinType: null,
+        // groupByFields: null,
+        // hasAggregateWithoutGroupBy: false,
+        // "orderByFields": null,
+        // "limit": null,
+        // "isDistinct": false
     });
 });
 
@@ -76,7 +86,12 @@ test('Parse SQL Query with Multiple WHERE Clauses', () => {
         }],
         joinCondition: null,
         joinTable: null,
-        joinType: null
+        joinType: null,
+        // groupByFields: null,
+        // hasAggregateWithoutGroupBy: false,
+        // "orderByFields": null,
+        // "limit": null,
+        // "isDistinct": false
     });
 });
 
@@ -110,7 +125,13 @@ test('Parse SQL Query with INNER JOIN', async () => {
         whereClauses: [],
         joinTable: 'enrollment',
         joinCondition: { left: 'student.id', right: 'enrollment.student_id' },
-        joinType: 'INNER'
+        joinType: 'INNER',
+        // groupByFields: null,
+        // hasAggregateWithoutGroupBy: false,
+        // "orderByFields": null,
+        // "limit": null,
+        // "isDistinct": false
+
     })
 });
 
@@ -123,7 +144,12 @@ test('Parse SQL Query with INNER JOIN and WHERE Clause', async () => {
         whereClauses: [{ field: 'student.age', operator: '>', value: '20' }],
         joinTable: 'enrollment',
         joinCondition: { left: 'student.id', right: 'enrollment.student_id' },
-        joinType: 'INNER'
+        joinType: 'INNER',
+        // groupByFields: null,
+        // hasAggregateWithoutGroupBy: false,
+        // "orderByFields": null,
+        // "limit": null,
+        // "isDistinct": false
     })
 });
 

@@ -3,7 +3,7 @@ const { parseQuery, parseJoinClause} = require('../../src/queryParser');
 const executeSELECTQuery = require('../../src/index');
 
 test('Read CSV File', async () => {
-    const data = await readCSV('tests/step-06/student.csv');
+    const data = await readCSV('tests/step-05/student.csv');
     expect(data.length).toBeGreaterThan(0);
     expect(data.length).toBe(4);
     expect(data[0].name).toBe('John');
@@ -24,7 +24,7 @@ test('Parse SQL Query', () => {
         // hasAggregateWithoutGroupBy: false,
         // "orderByFields": null,
         // "limit": null,
-        // "isDistinct": false
+        // "isDistinct": false// Update to match the new structure
     });
 });
 
@@ -47,11 +47,13 @@ test('Parse SQL Query with WHERE Clause', () => {
         joinCondition: null,
         joinType: null,
         joinTable: null,
-        whereClauses: [{
-            field: "age",
-            operator: "=",
-            value: "25",
-        }],
+        whereClauses: [
+            {
+                field: 'age',
+                operator: '=',
+                value: '25'
+            }
+        ],
         // groupByFields: null,
         // hasAggregateWithoutGroupBy: false,
         // "orderByFields": null,
@@ -67,37 +69,4 @@ test('Execute SQL Query with WHERE Clause', async () => {
     expect(result[0]).toHaveProperty('id');
     expect(result[0]).toHaveProperty('name');
     expect(result[0].id).toBe('2');
-});
-
-test('Parse SQL Query with Multiple WHERE Clauses', () => {
-    const query = 'SELECT id, name FROM student WHERE age = 30 AND name = John';
-    const parsed = parseQuery(query);
-    expect(parsed).toEqual({
-        fields: ['id', 'name'],
-        table: 'student',
-        joinCondition: null,
-        joinType: null,
-        joinTable: null,
-        whereClauses: [{
-            "field": "age",
-            "operator": "=",
-            "value": "30",
-        }, {
-            "field": "name",
-            "operator": "=",
-            "value": "John",
-        }],
-        // groupByFields: null,
-        // hasAggregateWithoutGroupBy: false,
-        // "orderByFields": null,
-        // "limit": null,
-        // "isDistinct": false
-    });
-});
-
-test('Execute SQL Query with Multiple WHERE Clause', async () => {
-    const query = 'SELECT id, name FROM student WHERE age = 30 AND name = John';
-    const result = await executeSELECTQuery(query);
-    expect(result.length).toBe(1);
-    expect(result[0]).toEqual({ id: '1', name: 'John' });
 });
