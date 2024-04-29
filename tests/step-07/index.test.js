@@ -1,11 +1,11 @@
-const readCSV = require('../../src/csvReader');
-const parseQuery = require('../../src/queryParser');
+const  readCSV  = require('../../src/csvReader');
+const { parseQuery, parseJoinClause} = require('../../src/queryParser');
 const executeSELECTQuery = require('../../src/index');
 
 test('Read CSV File', async () => {
-    const data = await readCSV('./sample.csv');
+    const data = await readCSV('tests/step-07/student.csv');
     expect(data.length).toBeGreaterThan(0);
-    expect(data.length).toBe(3);
+    expect(data.length).toBe(4);
     expect(data[0].name).toBe('John');
     expect(data[0].age).toBe('30'); //ignore the string type here, we will fix this later
 });
@@ -16,7 +16,15 @@ test('Parse SQL Query', () => {
     expect(parsed).toEqual({
         fields: ['id', 'name'],
         table: 'sample',
-        whereClauses: []
+        joinCondition: null,
+        joinTable: null,
+        whereClauses: [],
+        joinType: null,
+        // groupByFields: null,
+        // hasAggregateWithoutGroupBy: false,
+        // "orderByFields": null,
+        // "limit": null,
+        // "isDistinct": false
     });
 });
 
@@ -36,11 +44,19 @@ test('Parse SQL Query with WHERE Clause', () => {
     expect(parsed).toEqual({
         fields: ['id', 'name'],
         table: 'sample',
+        joinCondition: null,
+        joinType: null,
+        joinTable: null,
         whereClauses: [{
           field: "age",
           operator: "=",
           value: "25",
         }],
+        // groupByFields: null,
+        // hasAggregateWithoutGroupBy: false,
+        // "orderByFields": null,
+        // "limit": null,
+        // "isDistinct": false
     });
 });
 
@@ -59,6 +75,9 @@ test('Parse SQL Query with Multiple WHERE Clauses', () => {
     expect(parsed).toEqual({
         fields: ['id', 'name'],
         table: 'sample',
+        joinCondition: null,
+        joinType: null,
+        joinTable: null,
         whereClauses: [{
             "field": "age",
             "operator": "=",
@@ -67,7 +86,12 @@ test('Parse SQL Query with Multiple WHERE Clauses', () => {
             "field": "name",
             "operator": "=",
             "value": "John",
-        }]
+        }],
+        // groupByFields: null,
+        // hasAggregateWithoutGroupBy: false,
+        // "orderByFields": null,
+        // "limit": null,
+        // "isDistinct": false
     });
 });
 
